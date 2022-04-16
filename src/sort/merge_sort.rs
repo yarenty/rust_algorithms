@@ -17,21 +17,18 @@ fn merge(c: &[i32], d: &[i32]) -> Vec<i32> {
     let mut j = 0;
     let mut b = vec![0; n];
     for k in 0..n {
-        println!("compare: {} c[{}] vs {} d[{}]", c[i], i, d[j], j);
         if c[i] < d[j] {
             b[k] = c[i];
             i = i + 1;
-            println!("{}: c[{}] c.len={},k={}", b[k], i, c.len(), k);
             if i == c.len() {
-                b = finito(&b[..k + 1], &d[j..]);
+                b = concat(&b[..k + 1], &d[j..]);
                 break;
             }
         } else {
             b[k] = d[j];
             j = j + 1;
-            println!("{}: d[{}] d.len={}", b[k], j, d.len());
             if j == d.len() {
-                b = finito(&b[..k + 1], &c[i..]);
+                b = concat(&b[..k + 1], &c[i..]);
                 break;
             }
         }
@@ -39,18 +36,13 @@ fn merge(c: &[i32], d: &[i32]) -> Vec<i32> {
     b
 }
 
-fn finito(head: &[i32], tail: &[i32]) -> Vec<i32> {
+fn concat(head: &[i32], tail: &[i32]) -> Vec<i32> {
     let mut v3 = vec![];
     v3.extend_from_slice(head);
     v3.extend_from_slice(tail);
     v3
 }
 
-// This function borrows a slice
-fn analyze_slice(slice: &[i32]) {
-    println!("first element of the slice: {}", slice[0]);
-    println!("the slice has {} elements", slice.len());
-}
 
 #[cfg(test)]
 mod tests {
@@ -76,11 +68,11 @@ mod tests {
     }
 
     #[test]
-    fn test_finito() {
+    fn test_concat() {
         let a = [1, 2, 3, 4];
         let b = [5, 6, 7, 8];
         let expected = [1, 2, 3, 4, 5, 6, 7, 8];
-        let result = finito(&a, &b);
+        let result = concat(&a, &b);
         assert_eq!(result, expected);
     }
 
