@@ -20,7 +20,7 @@ pub fn rec_int_mult(x: u64, y: u64) -> u64 {
 }
 
 
-fn get_n(x: u64, y: u64) -> u32 {
+fn get_n(x: u64, _y: u64) -> u32 {
     let mut n = 1;
     for i in 0..10 {
         if x / 10_u64.pow(i) == 0 {
