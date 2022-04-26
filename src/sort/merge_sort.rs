@@ -36,6 +36,32 @@ fn merge(c: &[i32], d: &[i32]) -> Vec<i32> {
     b
 }
 
+fn merge_dyn(c: &[i32], d: &[i32]) -> Vec<i32> {
+    let n = c.len() + d.len();
+    let mut i = 0;
+    let mut j = 0;
+    let mut b = Vec::new();
+    for _ in 0..n {
+        if c[i] < d[j] {
+            b.push(c[i]);
+            i = i + 1;
+            if i == c.len() {
+                b = concat(&b, &d[j..]);
+                break;
+            }
+        } else {
+            b.push(d[j]);
+            j = j + 1;
+            if j == d.len() {
+                b = concat(&b, &c[i..]);
+                break;
+            }
+        }
+    }
+    b
+}
+
+
 fn concat(head: &[i32], tail: &[i32]) -> Vec<i32> {
     let mut v3 = vec![];
     v3.extend_from_slice(head);
@@ -48,7 +74,6 @@ fn concat(head: &[i32], tail: &[i32]) -> Vec<i32> {
 mod tests {
     use super::*;
 
-
     #[test]
     fn test_merge() {
         let a = [1, 2];
@@ -59,11 +84,29 @@ mod tests {
     }
 
     #[test]
-    fn test_merge2() {
+    fn test_merge_mix() {
         let a = [1, 4];
         let b = [2, 3];
         let expected = [1, 2, 3, 4];
         let result = merge(&a, &b);
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_merge_dyn() {
+        let a = [1, 2];
+        let b = [3, 4];
+        let expected = [1, 2, 3, 4];
+        let result = merge_dyn(&a, &b);
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_merge_dyn_mix() {
+        let a = [1, 4];
+        let b = [2, 3];
+        let expected = [1, 2, 3, 4];
+        let result = merge_dyn(&a, &b);
         assert_eq!(result, expected);
     }
 
